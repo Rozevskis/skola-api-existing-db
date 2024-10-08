@@ -10,7 +10,9 @@ class PostController extends Controller
 
     public function index()
     {
-        return Post::all();
+        $posts = Post::with('comments')->get(); // Fetch posts with comments
+
+        return response()->json($posts); // Return the posts in JSON format
     }
 
 
@@ -20,9 +22,10 @@ class PostController extends Controller
         
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
-        
+        $post = Post::with('comments')->findOrFail($id); // Fetch post by ID or fail
+        return response()->json($post);
     }
 
     public function update(Request $request, Post $post)
